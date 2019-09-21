@@ -1,0 +1,170 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["upscale_factor", "train_datasets", "train_image_conditions", "test_datasets", "lr_rate", "network_name", "optimizer", "optimization_param", "batch_size", "epoch"],
+    "properties":{
+        "upscale_factor":{
+            "type": "integer",
+            "description": "upscale factor"
+        },
+        "train_datasets": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "training dataset name",
+            "examples": [
+                "T91",
+                "BSDS200",
+                "Manga"
+            ]
+        },
+        "train_image_conditions":{
+            "type": "object",
+            "properties": {
+                "stride":{
+                    "type": "number",
+                    "description": "the size of stride when patch teach image are cropped from original teach image"
+                }
+            },
+            "oneOf":[
+                {
+                    "properties": {
+                        "teach_image_size": {
+                        "type": "number",
+                        "description": "the size of teach image size"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "train_image_size": {
+                            "type": "number",
+                            "description": "the size of patch train image size"
+                        }
+                    }
+                }
+            ]
+        },
+        "test_datasets": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "default":[
+                    "Set5",
+                    "Set14",
+                    "BSDS100",
+                    "Urban100",
+                    "Manga109"],
+                "examples": [
+                    "Set5",
+                    "Set14",
+                    "BSDS100",
+                    "Urban100",
+                    "Manga109"
+                ]
+            },
+            "description": "testing dataset name",
+        },
+        "lr_rate": {
+            "type": "number",
+            "description": "basic learning rate"
+        },
+        "network_name":{
+            "type": "string",
+            "description": "network_name",
+            "examples": [
+                "MCH"
+            ]
+        },
+        "take_snapshot_regularly":{
+            "type": "boolean",
+            "default": false,
+            "description": "whether take snapshot regularly. you need to set snapshot_interval"
+        },
+        "snapshot_interval":{
+            "type": "number",
+            "default": "10"
+        },
+        "optimizer":{
+            "type": "object",
+            "properties": {
+                "name":{
+                    "type": "string",
+                    "description": "optimization algorithm name such as SGD or Adam. Please refer https://pytorch.org/docs/stable/optim.html",
+                    "examples":[
+                    "SGD",
+                    "Adam",
+                    "Adadelta",
+                    "RMSprop"
+                ]
+                },
+                "params":{
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "description": "optimization algorithm parameters"
+                }
+            }
+        },
+        "lr_scheduler":{
+            "type": "object",
+            "properties": {
+                "name":{
+                    "type": "string",
+                    "description": "learning rate scheduler name. Please refer https://pytorch.org/docs/stable/optim.html",
+                    "examples": [
+                        "StepLR",
+                        "MultiStepLR",
+                        "ExponentialLR"
+                    ]
+                },
+                "params":{
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "description": "learning rate scheduler parameters"
+                }
+            },
+            "default": false
+        },
+        "batch_size":{
+            "type": "number",
+            "description": "batch size in training phase"
+        },
+        "test_interval":{
+            "type": "number",
+            "description": "interval of testing",
+            "default": 1
+        },
+        "test_batch_size":{
+            "type": "number",
+            "description": "batch size in testing phase",
+            "default": 1
+        },
+        "epoch": {
+            "type": "number",
+            "description": "the number of epoch"
+        },
+        "self_ensemble":{
+            "type": "object",
+            "properties": {
+                "rotation":{
+                    "type": "boolean",
+                    "default": false
+                },
+                "luminance_inverse":{
+                    "type": "boolean",
+                    "default": false
+                },
+                "flip":{
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        }
+    }
+}
